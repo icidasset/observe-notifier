@@ -42,7 +42,7 @@
 
     switch (operator) {
       case "change":
-        conditions.type = "update";
+        conditions.type = "ALL";
         break;
 
       case "add":
@@ -54,12 +54,17 @@
         conditions.type = "delete";
         break;
 
+      case "update":
+        conditions.type = "update";
+        break;
+
       default:
         return;
     }
 
     // new observation
-    Object.observe(this.obj, make_new_observer_function(conditions, callback));
+    observer = make_new_observer_function(conditions, callback);
+    Object.observe(this.obj, observer);
 
     obj = {
       id: this.path_observer_counter,
@@ -81,15 +86,15 @@
 
   function make_new_observer_function(conditions, callback) {
     return function(changes) {
-      var l = conditions.name ? changes.length : 1;
+      var l = changes.length;
 
       for (var k=0; k<l; ++k) {
         var change = changes[k];
         var name_check = (conditions.name ? change.name === conditions.name : true);
-        var type_check = (change.type === conditions.type);
+        var type_check = (conditions.type == "ALL" ? true : change.type === conditions.type);
 
         if (name_check && type_check) {
-          callback(change.object[change.name], change.oldValue);
+          callback(change.object[change.name], change.oldValue, change.type, change.name);
         }
       }
 
@@ -115,6 +120,6 @@
   //
   //  Export
   //
-  exports.action = ObserveNotifier;
+  exports.Class = ObserveNotifier;
 
 }));
