@@ -3,15 +3,15 @@
 (function(root, factory) {
   if (typeof define === "function" && define.amd) {
     // AMD. Register as an anonymous module.
-    define(["exports", "b"], factory);
+    define(["exports"], factory);
   } else if (typeof exports === "object") {
     // CommonJS
-    factory(exports, require("b"));
+    module.exports = factory();
   } else {
     // Browser globals
-    factory((root.ObserveNotifier = {}), root.b);
+    root.ObserveNotifier = factory();
   }
-}(this, function(exports, b) {
+}(this, function() {
 
   "use strict";
 
@@ -120,6 +120,6 @@
   //
   //  Export
   //
-  exports.Class = ObserveNotifier;
+  return ObserveNotifier;
 
 }));

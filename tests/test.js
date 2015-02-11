@@ -6,7 +6,7 @@
 
 
 var obj = {};
-var objNotifier = new ObserveNotifier.Class(obj);
+var objNotifier = new ObserveNotifier(obj);
 var test_stack, interval_id;
 
 
@@ -164,7 +164,7 @@ function stopTests(show_error) {
 
 
 function propertyAdded(p, v) {
-  return "Property <b>" + p + "</b> has been added with the value <b>" + v + "</b>.";
+  return "Property <b>" + p + "</b> has been added with the value <b>" + JSON.stringify(v) + "</b>.";
 }
 
 
